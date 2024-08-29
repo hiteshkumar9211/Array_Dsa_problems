@@ -91,38 +91,52 @@ class LinkedList:
                current = current.next
     #function for merginf of two linked lists.
     def merge(self,other):
-         if self.head is None:
-            self.head = other.head
+      if self.head is None:
+          self.head = other.node
+          return
+      if other.head is None:
+          return
+      temp1 = self.head
+      temp2 = other.head
+      prev = None
+      while temp1 and temp2:
+          if temp1.data <= temp2.data:
+              if prev is None:
+                  self.head = temp1
+              prev = temp1
+              temp1 = temp1.next
+          else:
+              if prev:
+                  prev.next = temp2
+              else:
+                  other.head = temp2
+              prev = temp2
+              temp2 = temp2.next
+      if temp1:
+          prev.next = temp1
+      if temp2:
+          prev.next = temp2
+    def rotate(self, k):
+        if k==0:
             return
-         if other.head is None:
+
+        node=self.head
+        cnt=1
+        while cnt<k and node is not None:
+            node=node.next
+            cnt+=1
+
+        if node is None:
             return
 
-         # Initialize pointers for traversal
-         temp1 = self.head
-         temp2 = other.head
-         prev = None  # Keeps track of the previous node in the merged list
+        keyNode=node
 
-         # Iterate through both lists, comparing and merging nodes
-         while temp1 and temp2:
-            if temp1.data <= temp2.data:
-                if prev is None:
-                    self.head = temp1  # Update head if merging at the beginning
-                prev = temp1
-                temp1 = temp1.next
-            else:
-                if prev:
-                    prev.next = temp2
-                else:
-                    self.head = temp2  # Update head if merging at the beginning
-                prev = temp2
-                temp2 = temp2.next
+        while node.next is not None:
+            node=node.next
 
-           # Append the remaining nodes from the longer list
-         if temp1:
-             prev.next = temp1
-         elif temp2:
-            prev.next = temp2
-
+        node.next=self.head
+        self.head=keyNode.next
+        keyNode.next=None
     #printing linked list.
     def printList(self):
         temp = self.head
@@ -175,6 +189,11 @@ llist1 = LinkedList()
 llist1.append(4)
 llist1.append(5)
 llist1.append(6)
+# llist1.printList()
+# llist.merge(llist1)
+# llist.printList()
+llist1.append(8)
+llist1.append(9)
 llist1.printList()
-llist.merge(llist1)
-llist.printList()
+llist1.rotate(2)
+llist1.printList()
